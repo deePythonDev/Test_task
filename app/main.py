@@ -21,6 +21,7 @@ csv_data=[]
 
 with open(f'{os.path.dirname(__file__)}/test.csv', encoding ='unicode_escape') as csvfile:
     reader = csv.DictReader(csvfile)
+    logging.critical("Updating database started....")
     for row in reader:
         try:
             PKobj = db.query(Test).filter_by(primKey=row['Field1']+row['Field2']).first()
@@ -31,6 +32,7 @@ with open(f'{os.path.dirname(__file__)}/test.csv', encoding ='unicode_escape') a
                 csv_data.append(row["Field1"]+row["Field2"])
 
                 if str(row['Field3']) != str(PKobj.field3) or str(row['Field4']) != str(PKobj.field4) or str(row['Field5']) != str(PKobj.field5):
+                    logging.critical(f"{row['Field1']+row['Field2']} Value Updated....")
                     PKobj.field3 = row['Field3']
                     PKobj.field4 = row['Field4']
                     PKobj.field5 = row['Field5']
@@ -38,8 +40,7 @@ with open(f'{os.path.dirname(__file__)}/test.csv', encoding ='unicode_escape') a
 
             except Exception as e:
                 if (isinstance(e,AttributeError)):
-                    print(row['Field1']+row['Field2'],"values inserted")
-                    # logging.error(str(e),"values inserted to database")
+                    logging.critical(f"{row['Field1']+row['Field2']} Value Inserted....")
                 _test = Test(primKey = row['Field1']+row['Field2'], field1 = row['Field1'], field2= row['Field2'],field3= row['Field3'],
                                 field4= row['Field4'],field5= row['Field5'], iud= 'I')
                 db.add(_test)
