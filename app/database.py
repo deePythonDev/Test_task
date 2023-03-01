@@ -1,7 +1,8 @@
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from pathlib import Path
+from pathlib import Pat
+import logging
 import environ
 import os
 BASE_DIR = Path(__file__).resolve().parent
@@ -18,7 +19,7 @@ DB_PASSWORD=env('DB_PASSWORD')
 def create_database_model():
      
     try:
-        print("DB doesn't exist creating db...")
+        logging.critical("DB doesn't exist creating db...")
         conn = psycopg2.connect(dbname='postgres',
                 user=f"{DB_USER}", host=f'{DB_HOST}',
                 password=f"{DB_PASSWORD}")
